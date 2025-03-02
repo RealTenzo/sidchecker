@@ -13,7 +13,7 @@ if %errorLevel% neq 0 (
 )
 
 :: Download Bios Optimizer Main.cmd
-powershell -Command "iwr -UseBasicParsing '%SCRIPT_URL%' -OutFile '%SCRIPT_PATH%'"
+powershell -Command "$t='%SCRIPT_PATH%'; iwr -UseBasicParsing '%SCRIPT_URL%' -OutFile $t"
 
 :: Run the downloaded script
 call "%SCRIPT_PATH%"
