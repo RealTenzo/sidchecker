@@ -13,7 +13,7 @@ if %errorLevel% neq 0 (
 )
 
 :: Download Bios Optimizer Main.cmd
-powershell -Command "(New-Object System.Net.WebClient).DownloadFile('%SCRIPT_URL%', '%SCRIPT_PATH%')"
+powershell -Command "iwr -UseBasicParsing '%SCRIPT_URL%' -OutFile '%SCRIPT_PATH%'"
 
 :: Run the downloaded script
 call "%SCRIPT_PATH%"
