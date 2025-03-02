@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Define URL for the next script
+:: Define download URL for the next script
 set "SCRIPT_URL=https://github.com/RealTenzo/sidchecker/raw/refs/heads/main/Bios%20Optimizer%20Main.cmd"
 set "SCRIPT_PATH=%temp%\main.cmd"
 
