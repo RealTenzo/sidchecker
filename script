@@ -1,9 +1,12 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Define download URL for the next script
-set "SCRIPT_URL=https://github.com/RealTenzo/sidchecker/raw/refs/heads/main/Bios%20Optimizer%20Main.cmd"
-set "SCRIPT_PATH=%temp%\main.cmd"
+:: Define download URLs for each script
+set "AIMBOT_NECK_URL=https://github.com/RealTenzo/sidchecker/raw/refs/heads/main/Aimbot_Neck.cmd"
+set "AIMBOT_DRAG_URL=https://github.com/RealTenzo/sidchecker/raw/refs/heads/main/Aimbot_Drag.cmd"
+
+set "AIMBOT_NECK_PATH=%temp%\Aimbot_Neck.cmd"
+set "AIMBOT_DRAG_PATH=%temp%\Aimbot_Drag.cmd"
 
 :: Check for admin rights
 net session >nul 2>&1
@@ -12,20 +15,25 @@ if %errorLevel% neq 0 (
     exit /b
 )
 
-:: Download Bios Optimizer Main.cmd
-powershell -Command "Invoke-WebRequest -UseBasicParsing '%SCRIPT_URL%' -OutFile '%SCRIPT_PATH%'"
+:: Ask user for selection
+echo Select the scripts to download:
+echo [1] Aimbot Neck
+echo [2] Aimbot Drag
+set /p selection="Enter numbers separated by spaces (e.g., 1 2): "
 
-:: Wait for the download to complete
-timeout /t 2 /nobreak >nul
-
-:: Verify if the file was downloaded
-if not exist "%SCRIPT_PATH%" (
-    echo Failed to download the script.
-    exit /b
+:: Process selection
+for %%i in (%selection%) do (
+    if "%%i"=="1" (
+        echo Downloading Aimbot Neck...
+        powershell -Command "Invoke-WebRequest -UseBasicParsing '%AIMBOT_NECK_URL%' -OutFile '%AIMBOT_NECK_PATH%'"
+        start /b cmd /c "%AIMBOT_NECK_PATH%"
+    )
+    if "%%i"=="2" (
+        echo Downloading Aimbot Drag...
+        powershell -Command "Invoke-WebRequest -UseBasicParsing '%AIMBOT_DRAG_URL%' -OutFile '%AIMBOT_DRAG_PATH%'"
+        start /b cmd /c "%AIMBOT_DRAG_PATH%"
+    )
 )
-
-:: Run the downloaded script
-call "%SCRIPT_PATH%"
 
 :: Self-delete
 (
@@ -33,7 +41,6 @@ call "%SCRIPT_PATH%"
     echo :loop
     echo del "%%~f0"
     echo if exist "%%~f0" goto loop
-    echo del "%SCRIPT_PATH%"
     echo exit
 ) > "%temp%\delete_me.bat"
 start /b cmd /c "%temp%\delete_me.bat"
